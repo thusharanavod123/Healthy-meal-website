@@ -1,0 +1,2 @@
+import { cn } from "@/lib/utils";
+export function AdSlot({ placement, className }: { placement: "below-intro" | "mid-article" | "after-instructions" | "before-related"; className?: string }) { return <aside aria-label="Advertisement" data-ad-placement={placement} className={cn("my-10 flex min-h-[140px] items-center justify-center rounded-lg border border-dashed border-[#c8d6cd] bg-[#f8faf8] px-4 text-center text-[11px] font-bold tracking-[.18em] text-[#7c9085] uppercase sm:min-h-[180px]", className)}>Advertisement</aside> }

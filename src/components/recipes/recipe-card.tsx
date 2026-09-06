@@ -1,0 +1,5 @@
+import Image from "next/image";
+import Link from "next/link";
+import { Clock } from "lucide-react";
+import type { Recipe } from "@/types/content";
+export function RecipeCard({ recipe, priority = false }: { recipe: Recipe; priority?: boolean }) { return <article className="group"><Link href={`/recipes/${recipe.slug}`} className="focus-ring block overflow-hidden rounded-2xl bg-[#edf3ed]"><Image src={recipe.image} alt={recipe.imageAlt} width={720} height={450} priority={priority} className="aspect-[8/5] w-full object-cover transition duration-500 group-hover:scale-[1.03]" /></Link><div className="pt-4"><Link className="eyebrow hover:underline" href={`/categories/${recipe.category.slug}`}>{recipe.category.name}</Link><h3 className="display mt-2 text-[1.65rem] font-bold leading-tight"><Link href={`/recipes/${recipe.slug}`} className="hover:text-[#287a55]">{recipe.title}</Link></h3><p className="mt-2 line-clamp-2 text-sm leading-6 text-[#61766c]">{recipe.description}</p><div className="mt-3 flex items-center gap-2 text-xs font-bold text-[#61766c]"><Clock size={15} /> {recipe.prepMinutes + recipe.cookMinutes} mins · {recipe.protein}g protein</div></div></article> }

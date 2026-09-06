@@ -1,0 +1,2 @@
+import Link from "next/link"; import { Button } from "@/components/ui/button";
+export default function NotFound() { return <div className="container-site py-28 text-center"><p className="eyebrow">404</p><h1 className="display mt-3 text-6xl font-bold">That page isn’t on the menu.</h1><p className="mx-auto mt-5 max-w-lg text-[#5d7168]">The recipe may have moved, but there are plenty more fresh ideas to explore.</p><Button asChild className="mt-8"><Link href="/recipes">Browse recipes</Link></Button></div> }

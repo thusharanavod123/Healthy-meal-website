@@ -1,0 +1,6 @@
+import type { Metadata } from "next";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+export const metadata: Metadata = { title: "Contact", description: "Contact the FreshTable editorial team.", alternates: { canonical: "/contact" } };
+export default function ContactPage() { return <div className="container-site grid gap-12 py-16 lg:grid-cols-2"><div><p className="eyebrow">Get in touch</p><h1 className="display mt-3 text-6xl font-bold">We’d love to hear from you.</h1><p className="mt-6 max-w-md leading-7 text-[#5c7166]">Questions, recipe feedback, or partnership inquiries? Send a note to hello@freshtable.com or use this form.</p></div><form className="grid gap-5 rounded-3xl bg-[#f3f6f0] p-7 sm:p-10"><label className="grid gap-2 text-sm font-bold">Name<Input name="name" required /></label><label className="grid gap-2 text-sm font-bold">Email<Input type="email" name="email" required /></label><label className="grid gap-2 text-sm font-bold">Message<Textarea name="message" required /></label><Button type="submit">Send message</Button><p className="text-xs text-[#6b7c73]">Form delivery will be connected in phase 2.</p></form></div> }
