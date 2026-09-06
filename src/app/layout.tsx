@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import "./globals.css";
+import "@fontsource/poppins/400.css";
+import "@fontsource/poppins/600.css";
+import "@fontsource/poppins/700.css";
 import { Analytics } from "@/components/analytics";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://freshtable.com";

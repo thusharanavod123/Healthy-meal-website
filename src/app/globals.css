@@ -13,3 +13,4 @@ button, input, textarea, select { font: inherit; }
 .prose-recipe h2 { margin-top: 2.5rem; font-family: Georgia, serif; font-size: 1.9rem; letter-spacing: -.025em; }
 .prose-recipe p, .prose-recipe li { color: #466057; line-height: 1.75; }
 .focus-ring:focus-visible { outline: 3px solid #8ec9a3; outline-offset: 3px; }
+.font-poppins { font-family: "Poppins", Arial, Helvetica, sans-serif; }
