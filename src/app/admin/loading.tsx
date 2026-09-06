@@ -1,0 +1,1 @@
+export default function Loading() { return <div className="flex min-h-screen items-center justify-center bg-[#f5f6f3]"><div className="h-10 w-10 animate-spin rounded-full border-4 border-[#cce1d2] border-t-[#287a55]" aria-label="Loading" /></div> }

@@ -1,0 +1,27 @@
+import { createClient as createSupabaseClient } from "@supabase/supabase-js";
+import { unstable_cache } from "next/cache";
+import { categories as fallbackCategories, recipes as fallbackRecipes } from "@/lib/content";
+import type { Category, Recipe } from "@/types/content";
+
+type JoinedRecipe = {
+  id: string; title: string; slug: string; short_description: string; hero_image_url: string | null; hero_image_alt: string | null;
+  author_name: string; published_at: string | null; updated_at: string; prep_minutes: number; cook_minutes: number; servings: number | null;
+  calories: number | null; protein_grams: number | null; carbs_grams: number | null; fat_grams: number | null; helpful_tips: string[] | null;
+  seo_title: string | null; meta_description: string | null; status: "draft" | "published"; featured?: boolean;
+  ingredients?: { display_text: string; sort_order: number }[]; recipe_steps?: { instruction: string; sort_order: number }[];
+  recipe_faqs?: { question: string; answer: string; sort_order: number }[];
+  recipe_categories?: { is_primary: boolean; categories: { name: string; slug: string; description: string | null } | null }[];
+  recipe_tags?: { tags: { name: string; slug: string } | null }[];
+};
+const select = "id,title,slug,short_description,hero_image_url,hero_image_alt,author_name,published_at,updated_at,prep_minutes,cook_minutes,servings,calories,protein_grams,carbs_grams,fat_grams,helpful_tips,seo_title,meta_description,status,featured,ingredients(display_text,sort_order),recipe_steps(instruction,sort_order),recipe_faqs(question,answer,sort_order),recipe_categories(is_primary,categories(name,slug,description)),recipe_tags(tags(name,slug))";
+function publicClient() { const url = process.env.NEXT_PUBLIC_SUPABASE_URL; const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY; return url && key ? createSupabaseClient(url, key, { auth: { persistSession: false } }) : null; }
+function mapRecipe(row: JoinedRecipe): Recipe { const primary = row.recipe_categories?.find(c => c.is_primary)?.categories ?? row.recipe_categories?.[0]?.categories; return { id: row.id, title: row.title, slug: row.slug, description: row.short_description, image: row.hero_image_url || "/images/lemon-herb-chicken-bowl.png", imageAlt: row.hero_image_alt || row.title, author: row.author_name, publishedAt: row.published_at || row.updated_at, updatedAt: row.updated_at, prepMinutes: row.prep_minutes, cookMinutes: row.cook_minutes, servings: row.servings || 1, calories: row.calories || 0, protein: Number(row.protein_grams || 0), carbs: Number(row.carbs_grams || 0), fat: Number(row.fat_grams || 0), tips: row.helpful_tips || [], seoTitle: row.seo_title || row.title, metaDescription: row.meta_description || row.short_description, status: row.status, featured: Boolean(row.featured), category: primary ? { name: primary.name, slug: primary.slug, description: primary.description || "" } : { name: "Uncategorized", slug: "uncategorized", description: "" }, tags: row.recipe_tags?.flatMap(t => t.tags ? [t.tags.name] : []) || [], ingredients: row.ingredients?.sort((a,b) => a.sort_order-b.sort_order).map(i => i.display_text) || [], instructions: row.recipe_steps?.sort((a,b) => a.sort_order-b.sort_order).map(s => s.instruction) || [], faqs: row.recipe_faqs?.sort((a,b) => a.sort_order-b.sort_order).map(f => ({ question: f.question, answer: f.answer })) || [] }; }
+const queryPublished = unstable_cache(async () => { const client = publicClient(); if (!client) return fallbackRecipes; const { data, error } = await client.from("recipes").select(select).eq("status", "published").lte("published_at", new Date().toISOString()).order("published_at", { ascending: false }); if (error) { console.error("Published recipe query failed", error.message); return []; } return (data as unknown as JoinedRecipe[]).map(mapRecipe); }, ["published-recipes"], { tags: ["recipes"], revalidate: 3600 });
+const queryCategories = unstable_cache(async () => { const client = publicClient(); if (!client) return fallbackCategories; const { data, error } = await client.from("categories").select("name,slug,description").order("name"); if (error) { console.error("Category query failed", error.message); return []; } return data.map(c => ({ name: c.name, slug: c.slug, description: c.description || "" })); }, ["categories"], { tags: ["categories"], revalidate: 3600 });
+export async function getPublishedRecipes() { return queryPublished(); }
+export async function getCategories(): Promise<Category[]> { return queryCategories(); }
+export async function getRecipeBySlug(slug: string) { return (await getPublishedRecipes()).find(r => r.slug === slug); }
+export async function getRecipesByCategory(slug: string) { return (await getPublishedRecipes()).filter(r => r.category.slug === slug); }
+export async function getLatestRecipes(limit = 6) { return (await getPublishedRecipes()).slice(0, limit); }
+export async function getFeaturedRecipes(limit = 3) { const all = await getPublishedRecipes(); const featured = all.filter(r => r.featured); return (featured.length ? featured : all).slice(0, limit); }
+export async function getRelatedRecipes(recipe: Recipe, limit = 3) { return (await getPublishedRecipes()).filter(r => r.slug !== recipe.slug).sort((a,b) => Number(b.category.slug === recipe.category.slug) - Number(a.category.slug === recipe.category.slug)).slice(0, limit); }

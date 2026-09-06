@@ -1,0 +1,2 @@
+import { describe, expect, it } from "vitest"; import { recipes } from "./content"; import { buildRecipeSchema } from "./schema";
+describe("recipe JSON-LD", () => { it("contains Recipe type, nutrition, and ordered steps", () => { const schema = buildRecipeSchema(recipes[0], "https://example.com"); expect(schema["@type"]).toBe("Recipe"); expect(schema.nutrition.proteinContent).toBe("42 g"); expect(schema.recipeInstructions[0].position).toBe(1); }); });

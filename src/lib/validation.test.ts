@@ -1,0 +1,5 @@
+import { describe, expect, it } from "vitest";
+import { isPublishedVisible, isValidSlug, validateRecipeInput } from "./validation";
+describe("slug validation", () => { it("accepts clean URL slugs", () => expect(isValidSlug("lemon-chicken-2")).toBe(true)); it("rejects spaces and uppercase", () => expect(isValidSlug("Lemon Chicken")).toBe(false)); });
+describe("recipe input", () => { it("requires meaningful core content", () => { const result = validateRecipeInput({ title: "A", slug: "Bad Slug", description: "short", ingredients: "", instructions: "" }); expect(result.valid).toBe(false); expect(Object.keys(result.errors)).toEqual(expect.arrayContaining(["title","slug","description","ingredients","instructions"])); }); });
+describe("published visibility", () => { it("hides drafts and future posts", () => { expect(isPublishedVisible("draft", new Date().toISOString())).toBe(false); expect(isPublishedVisible("published", "2999-01-01T00:00:00Z")).toBe(false); }); it("shows currently published recipes", () => expect(isPublishedVisible("published", "2020-01-01T00:00:00Z")).toBe(true)); });

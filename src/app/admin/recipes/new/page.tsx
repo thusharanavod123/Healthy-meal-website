@@ -1,2 +1,2 @@
-import { RecipeForm } from "@/components/admin/recipe-form";
-export default function NewRecipePage() { return <><p className="eyebrow">Recipes</p><h1 className="mt-2 text-3xl font-bold">Create recipe</h1><div className="mt-8 max-w-4xl"><RecipeForm /></div></> }
+import { RecipeForm } from "@/components/admin/recipe-form"; import { AdminShell } from "@/components/admin/admin-shell"; import { getAdminCategories } from "@/lib/admin-data"; import { requireAdmin } from "@/lib/auth";
+export default async function NewRecipePage() { await requireAdmin(); const categories = await getAdminCategories(); return <AdminShell><p className="eyebrow">Recipes</p><h1 className="mt-2 text-3xl font-bold">Create recipe</h1><div className="mt-8 max-w-4xl"><RecipeForm categories={categories}/></div></AdminShell> }
