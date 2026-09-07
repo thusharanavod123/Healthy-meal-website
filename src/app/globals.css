@@ -14,3 +14,11 @@ button, input, textarea, select { font: inherit; }
 .prose-recipe p, .prose-recipe li { color: #466057; line-height: 1.75; }
 .focus-ring:focus-visible { outline: 3px solid #8ec9a3; outline-offset: 3px; }
 .font-poppins { font-family: "Poppins", Arial, Helvetica, sans-serif; }
+
+@media print {
+  header, footer, aside, [data-ad-slot], article > div:first-child, article + section { display: none !important; }
+  body { color: #000; background: #fff; }
+  #recipe-card { border: 0; padding: 0; }
+  #recipe-card button { display: none; }
+  .container-site { width: 100%; }
+}

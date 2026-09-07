@@ -8,8 +8,9 @@ import { RecipeCard } from "@/components/recipes/recipe-card";
 import { Button } from "@/components/ui/button";
 import { getPublishedRecipes, getRecipeBySlug, getRelatedRecipes } from "@/lib/queries";
 import { buildRecipeSchema } from "@/lib/schema";
+import { getSiteUrl } from "@/lib/site-url";
 type Props = { params: Promise<{ slug: string }> };
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://freshtable.com";
+const siteUrl = getSiteUrl();
 export async function generateStaticParams() { return (await getPublishedRecipes()).map(({ slug }) => ({ slug })); }
 export async function generateMetadata({ params }: Props): Promise<Metadata> { const recipe = await getRecipeBySlug((await params).slug); if (!recipe) return {}; const path = `/recipes/${recipe.slug}`; return { title: recipe.seoTitle, description: recipe.metaDescription, alternates: { canonical: path }, openGraph: { type: "article", title: recipe.seoTitle, description: recipe.metaDescription, url: path, publishedTime: recipe.publishedAt, modifiedTime: recipe.updatedAt, images: [{ url: recipe.image, alt: recipe.imageAlt }] } }; }
 export default async function RecipePage({ params }: Props) { const recipe = await getRecipeBySlug((await params).slug); if (!recipe) notFound(); const total = recipe.prepMinutes + recipe.cookMinutes; const related = await getRelatedRecipes(recipe); const recipeSchema = buildRecipeSchema(recipe, siteUrl); const crumbs = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: siteUrl }, { "@type": "ListItem", position: 2, name: "Recipes", item: `${siteUrl}/recipes` }, { "@type": "ListItem", position: 3, name: recipe.title, item: `${siteUrl}/recipes/${recipe.slug}` }] };
