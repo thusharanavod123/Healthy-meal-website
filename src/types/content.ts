@@ -1,4 +1,4 @@
-export type Category = { name: string; slug: string; description: string };
+export type Category = { name: string; slug: string; description: string; seoTitle?: string; metaDescription?: string };
 export type Recipe = {
   id?: string;
   title: string; slug: string; description: string; image: string; imageAlt: string; author: string;

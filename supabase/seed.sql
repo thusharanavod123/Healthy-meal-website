@@ -8,6 +8,25 @@ insert into public.categories (name, slug, description) values
 ('Budget Meals','budget-meals','Nutritious recipes that are kind to your grocery budget.')
 on conflict (slug) do update set name=excluded.name, description=excluded.description;
 
+update public.categories set
+  seo_title = case slug
+    when 'high-protein' then 'Easy High-Protein Recipes for Everyday Meals'
+    when 'quick-dinners' then 'Quick Healthy Dinner Recipes in 30 Minutes'
+    when 'air-fryer' then 'Easy Healthy Air Fryer Recipes'
+    when 'meal-prep' then 'Healthy Meal Prep Recipes for Busy Weeks'
+    when 'healthy-breakfasts' then 'Easy Healthy Breakfast Recipes'
+    when 'budget-meals' then 'Budget-Friendly Healthy Meal Recipes'
+  end,
+  meta_description = case slug
+    when 'high-protein' then 'Discover satisfying high-protein recipes made with everyday ingredients, clear steps, and practical nutrition for busy breakfasts, lunches, and dinners.'
+    when 'quick-dinners' then 'Make quick healthy dinners with simple ingredients and plenty of flavor. Find practical weeknight meals ready in 30 minutes or less.'
+    when 'air-fryer' then 'Find easy healthy air fryer recipes with crisp texture, straightforward instructions, and lighter ingredients for busy weeknight meals.'
+    when 'meal-prep' then 'Plan a simpler week with healthy meal prep recipes designed for make-ahead breakfasts, lunches, and satisfying everyday dinners.'
+    when 'healthy-breakfasts' then 'Start your day with easy healthy breakfast recipes, including make-ahead oats and balanced meals for busy weekday mornings.'
+    when 'budget-meals' then 'Cook affordable healthy meals using accessible ingredients, practical techniques, and flavorful recipes that help stretch your grocery budget.'
+  end
+where slug in ('high-protein','quick-dinners','air-fryer','meal-prep','healthy-breakfasts','budget-meals');
+
 insert into public.recipes (title,slug,short_description,hero_image_url,hero_image_alt,author_name,status,published_at,prep_minutes,cook_minutes,servings,calories,protein_grams,carbs_grams,fat_grams,helpful_tips,seo_title,meta_description,featured) values
 ('Lemon Herb Chicken Quinoa Bowls','lemon-herb-chicken-quinoa-bowls','Juicy lemon-garlic chicken, fluffy quinoa, and colorful roasted vegetables come together in an easy, protein-packed bowl.','/images/lemon-herb-chicken-bowl.png','Lemon herb chicken bowl with quinoa and vegetables','Maya Bennett','published','2026-08-18',15,20,4,445,42,38,16,array['Pound the chicken to an even thickness so it cooks uniformly.','Add the avocado just before serving.'],'Lemon Herb Chicken Quinoa Bowls (42g Protein)','Make easy lemon herb chicken quinoa bowls with roasted vegetables in 35 minutes.',true),
 ('Crispy Air Fryer Chicken Bites','crispy-air-fryer-chicken-bites','Tender, golden chicken bites with a smoky seasoning blend—ready in just 20 minutes.','/images/lemon-herb-chicken-bowl.png','Crispy seasoned chicken bites','Maya Bennett','published','2026-08-20',8,12,4,310,39,18,10,array['Cook in a single layer for the crispiest edges.'],'Healthy Air Fryer Chicken Bites','Easy crispy air fryer chicken bites ready in 20 minutes.',false),

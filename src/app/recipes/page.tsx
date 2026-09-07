@@ -4,7 +4,12 @@ import { Search } from "lucide-react";
 import { RecipeCard } from "@/components/recipes/recipe-card";
 import { getPublishedRecipes } from "@/lib/queries";
 
-export const metadata: Metadata = { title: "Healthy Recipes", description: "Browse easy, healthy recipes for quick dinners, high-protein meals, breakfast, meal prep, and more.", alternates: { canonical: "/recipes" } };
+const archiveMetadata: Metadata = { title: "Healthy Recipes", description: "Browse easy, healthy recipes for quick dinners, high-protein meals, breakfast, meal prep, and more.", alternates: { canonical: "/recipes" } };
+
+export async function generateMetadata({ searchParams }: { searchParams: Promise<{ q?: string }> }): Promise<Metadata> {
+  const q = (await searchParams).q?.trim();
+  return q ? { title: `Search results for “${q}”`, robots: { index: false, follow: true }, alternates: { canonical: "/recipes" } } : archiveMetadata;
+}
 
 export default async function RecipesPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
   const [allRecipes, query] = await Promise.all([getPublishedRecipes(), searchParams]);

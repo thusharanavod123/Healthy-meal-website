@@ -17,9 +17,10 @@ NEXT_PUBLIC_SITE_URL=https://your-domain.com
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 NEXT_PUBLIC_GA_MEASUREMENT_ID=
+NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=
 ```
 
-GA4 is optional and loads only when its ID is set. No service-role key is used by the app; authenticated operations are authorized by Row Level Security.
+GA4 is optional and loads only when its ID is set. No service-role key is used by the app; authenticated operations are authorized by Row Level Security. Google verification is also optional; use only the Search Console content token, not the full meta tag. Set `NEXT_PUBLIC_SITE_URL` to the canonical HTTPS production origin without a trailing slash.
 
 ## Supabase setup
 
@@ -28,6 +29,7 @@ GA4 is optional and loads only when its ID is set. No service-role key is used b
 3. Apply migrations in order with `supabase db push`, or paste these files into the SQL editor in order:
    - `supabase/migrations/202609060001_initial_content_schema.sql`
    - `supabase/migrations/202609060002_phase2_admin_storage.sql`
+   - `supabase/migrations/202609070001_phase3_seo.sql`
 4. The second migration creates the public `recipe-images` bucket, 5 MB/type restrictions, approved-admin table, helper function, and RLS policies.
 5. Add the project URL and anon key to `.env.local` and Vercel.
 
@@ -64,6 +66,15 @@ npm run lint
 npm test
 npm run build
 ```
+
+## Google Search Console
+
+1. Prefer a **Domain** property when you control DNS, then add Google’s TXT verification record with your DNS provider.
+2. Alternatively, use a URL-prefix property and set `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` in Vercel to Google’s verification token.
+3. Redeploy, verify the property, and submit `https://your-domain.com/sitemap.xml`.
+4. Keep `NEXT_PUBLIC_SITE_URL` set to the final canonical domain in Vercel Production.
+
+Published slugs should be treated as permanent. Before changing one, add a permanent redirect from the old recipe path in `next.config.ts`; do not silently strand an indexed URL.
 
 ## Operational notes
 

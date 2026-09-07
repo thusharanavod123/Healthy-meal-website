@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Clock, UtensilsCrossed } from "lucide-react";
@@ -5,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { RecipeCard } from "@/components/recipes/recipe-card";
 import { SectionHeading } from "@/components/recipes/section-heading";
 import { getCategories, getFeaturedRecipes, getLatestRecipes, getPublishedRecipes } from "@/lib/queries";
+
+export const metadata: Metadata = { title: { absolute: "Healthy Recipes & Easy Healthy Meals | FreshTable" }, description: "Find easy healthy meals for busy everyday life, including quick dinners, high-protein recipes, meal prep, air fryer favorites, and healthy breakfasts.", alternates: { canonical: "/" } };
 
 export default async function HomePage() { const [categories, recipes, featuredRecipes, latest] = await Promise.all([getCategories(), getPublishedRecipes(), getFeaturedRecipes(1), getLatestRecipes(3)]); const featured = featuredRecipes[0]; if (!featured) return <section className="container-site py-24"><h1 className="display text-6xl font-bold">Fresh recipes are coming soon.</h1></section>; return <>
   <section className="bg-[#f1f5ed] py-8 sm:py-12"><div className="container-site grid overflow-hidden rounded-[2rem] bg-[#dcebdc] lg:grid-cols-[.9fr_1.1fr]"><div className="flex flex-col justify-center px-7 py-12 sm:px-12 lg:px-16"><p className="eyebrow">Fresh, filling & weeknight-ready</p><h1 className="display mt-5 text-5xl font-bold sm:text-6xl lg:text-7xl">Healthy food you’ll actually crave.</h1><p className="mt-6 max-w-xl text-lg leading-8 text-[#476158]">Flavor-first recipes made with everyday ingredients, sensible nutrition, and clear, tested steps.</p><div className="mt-8 flex flex-wrap gap-3"><Button asChild size="lg"><Link href={`/recipes/${featured.slug}`}>Cook the featured recipe <ArrowRight size={18} /></Link></Button><Button asChild size="lg" variant="outline"><Link href="/recipes">Browse all recipes</Link></Button></div></div><Link href={`/recipes/${featured.slug}`} className="relative min-h-[380px] lg:min-h-[600px]"><Image src={featured.image} alt={featured.imageAlt} fill priority sizes="(max-width: 1024px) 100vw, 55vw" className="object-cover" /><div className="absolute inset-x-5 bottom-5 rounded-2xl bg-white/95 p-5 shadow-xl backdrop-blur"><p className="eyebrow">Editor’s pick</p><h2 className="display mt-1 text-2xl font-bold">{featured.title}</h2><p className="mt-2 flex items-center gap-2 text-xs font-bold text-[#5b7166]"><Clock size={15} /> {featured.prepMinutes + featured.cookMinutes} minutes · {featured.protein}g protein</p></div></Link></div></section>
