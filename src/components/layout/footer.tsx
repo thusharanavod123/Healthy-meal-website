@@ -1,2 +1,52 @@
+import { Youtube } from "lucide-react";
 import Link from "next/link";
-export function Footer() { return <footer className="font-poppins mt-24 bg-[#15372c] py-14 text-white"><div className="container-site grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]"><div><Link href="/" className="text-3xl font-bold">FreshTable</Link><p className="mt-4 max-w-sm text-sm leading-6 text-[#c7dbd0]">Practical, feel-good recipes for real life, made with wholesome ingredients and straightforward steps.</p></div><div><h2 className="font-bold">Explore</h2><div className="mt-4 grid gap-3 text-sm text-[#c7dbd0]"><Link href="/recipes">All recipes</Link><Link href="/categories/high-protein">High protein</Link><Link href="/categories/quick-dinners">Quick dinners</Link><Link href="/about">About us</Link></div></div><div><h2 className="font-bold">Information</h2><div className="mt-4 grid gap-3 text-sm text-[#c7dbd0]"><Link href="/editorial-policy">Editorial policy</Link><Link href="/contact">Contact</Link><Link href="/privacy-policy">Privacy policy</Link><Link href="/terms">Terms</Link><Link href="/disclaimer">Disclaimer</Link></div></div></div><div className="container-site mt-12 border-t border-white/15 pt-6 text-xs text-[#9fbaac]">© {new Date().getFullYear()} FreshTable. All rights reserved.</div></footer> }
+
+export function Footer() {
+  return (
+    <footer className="font-poppins mt-24 bg-[#15372c] py-14 text-white">
+      <div className="container-site grid gap-10 md:grid-cols-[1.4fr_1fr_1fr]">
+        <div>
+          <Link href="/" className="text-3xl font-bold">
+            FreshTable
+          </Link>
+          <p className="mt-4 max-w-sm text-sm leading-6 text-[#c7dbd0]">
+            Practical, feel-good recipes for real life, made with wholesome
+            ingredients and straightforward steps.
+          </p>
+          <a
+            href="https://www.youtube.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="FreshTable on YouTube"
+            title="FreshTable on YouTube"
+            className="mt-6 inline-flex size-16 items-center justify-center rounded-lg bg-[#ff0033] text-white transition hover:bg-[#e0002d] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+          >
+            <Youtube aria-hidden="true" className="size-10" strokeWidth={2.2} />
+          </a>
+        </div>
+        <div>
+          <h2 className="font-bold">Explore</h2>
+          <div className="mt-4 grid gap-3 text-sm text-[#c7dbd0]">
+            <Link href="/recipes">All recipes</Link>
+            <Link href="/categories/high-protein">High protein</Link>
+            <Link href="/categories/quick-dinners">Quick dinners</Link>
+            <Link href="/about">About us</Link>
+          </div>
+        </div>
+        <div>
+          <h2 className="font-bold">Information</h2>
+          <div className="mt-4 grid gap-3 text-sm text-[#c7dbd0]">
+            <Link href="/editorial-policy">Editorial policy</Link>
+            <Link href="/contact">Contact</Link>
+            <Link href="/privacy-policy">Privacy policy</Link>
+            <Link href="/terms">Terms</Link>
+            <Link href="/disclaimer">Disclaimer</Link>
+          </div>
+        </div>
+      </div>
+      <div className="container-site mt-12 border-t border-white/15 pt-6 text-xs text-[#9fbaac]">
+        &copy; {new Date().getFullYear()} FreshTable. All rights reserved.
+      </div>
+    </footer>
+  );
+}
