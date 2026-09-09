@@ -28,6 +28,7 @@ export function Footer() {
           <h2 className="font-bold">Explore</h2>
           <div className="mt-4 grid gap-3 text-sm text-[#c7dbd0]">
             <Link href="/recipes">All recipes</Link>
+            <Link href="/blog">Healthy eating guides</Link>
             <Link href="/categories/high-protein">High protein</Link>
             <Link href="/categories/quick-dinners">Quick dinners</Link>
             <Link href="/about">About us</Link>
