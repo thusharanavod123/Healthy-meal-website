@@ -1,12 +1,12 @@
 import type { Category, Recipe } from "@/types/content";
 
 export const categories: Category[] = [
-  { name: "High Protein", slug: "high-protein", description: "Satisfying, protein-forward meals for busy days." },
-  { name: "Quick Dinners", slug: "quick-dinners", description: "Wholesome dinners ready in 30 minutes or less." },
-  { name: "Air Fryer", slug: "air-fryer", description: "Crisp, lighter favorites made easy in the air fryer." },
-  { name: "Meal Prep", slug: "meal-prep", description: "Make-ahead meals that keep healthy eating simple." },
-  { name: "Healthy Breakfasts", slug: "healthy-breakfasts", description: "Bright, energizing starts to your day." },
-  { name: "Budget Meals", slug: "budget-meals", description: "Nutritious recipes that are kind to your grocery budget." }
+  { name: "High Protein", slug: "high-protein", description: "Satisfying high-protein recipes made with accessible ingredients for filling breakfasts, lunches, and weeknight dinners.", seoTitle: "Easy High-Protein Recipes for Everyday Meals", metaDescription: "Discover satisfying high-protein recipes made with everyday ingredients, clear steps, and practical nutrition for busy breakfasts, lunches, and dinners." },
+  { name: "Quick Dinners", slug: "quick-dinners", description: "Flavorful, wholesome dinner recipes designed to get a balanced meal on the table in 30 minutes or less.", seoTitle: "Quick Healthy Dinner Recipes in 30 Minutes", metaDescription: "Make quick healthy dinners with simple ingredients and plenty of flavor. Find practical weeknight meals ready in 30 minutes or less." },
+  { name: "Air Fryer", slug: "air-fryer", description: "Easy air fryer recipes with crisp texture, lighter ingredients, and straightforward instructions for busy cooks.", seoTitle: "Easy Healthy Air Fryer Recipes", metaDescription: "Find easy healthy air fryer recipes with crisp texture, straightforward instructions, and lighter ingredients for busy weeknight meals." },
+  { name: "Meal Prep", slug: "meal-prep", description: "Make-ahead breakfasts, lunches, and dinners that simplify healthy eating throughout a busy week.", seoTitle: "Healthy Meal Prep Recipes for Busy Weeks", metaDescription: "Plan a simpler week with healthy meal prep recipes designed for make-ahead breakfasts, lunches, and satisfying everyday dinners." },
+  { name: "Healthy Breakfasts", slug: "healthy-breakfasts", description: "Balanced breakfast recipes, including quick and make-ahead ideas, for an energizing start to your day.", seoTitle: "Easy Healthy Breakfast Recipes", metaDescription: "Start your day with easy healthy breakfast recipes, including make-ahead oats and balanced meals for busy weekday mornings." },
+  { name: "Budget Meals", slug: "budget-meals", description: "Affordable healthy recipes that use practical techniques and accessible ingredients to stretch your grocery budget.", seoTitle: "Budget-Friendly Healthy Meal Recipes", metaDescription: "Cook affordable healthy meals using accessible ingredients, practical techniques, and flavorful recipes that help stretch your grocery budget." }
 ];
 
 const base = {

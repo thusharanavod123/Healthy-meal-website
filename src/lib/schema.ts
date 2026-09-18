@@ -16,13 +16,40 @@ export function buildRecipeSchema(recipe: Recipe, siteUrl: string) {
   return {
     "@context": "https://schema.org", "@type": "Recipe", "@id": `${url}#recipe`, mainEntityOfPage: url,
     name: recipe.title, description: recipe.description, image: [absoluteUrl(recipe.image, siteUrl)],
-    author: { "@type": "Person", name: recipe.author }, datePublished: recipe.publishedAt, dateModified: recipe.updatedAt,
+    author: { "@type": "Person", name: recipe.author }, publisher: { "@id": `${siteUrl}/#organization` }, datePublished: recipe.publishedAt, dateModified: recipe.updatedAt,
     prepTime: isoDuration(recipe.prepMinutes), cookTime: isoDuration(recipe.cookMinutes), totalTime: isoDuration(recipe.prepMinutes + recipe.cookMinutes),
     recipeYield: `${recipe.servings} servings`, recipeCategory: recipe.category.name,
     ...(recipe.tags.length ? { keywords: recipe.tags.join(", ") } : {}),
     nutrition: { "@type": "NutritionInformation", calories: `${recipe.calories} calories`, proteinContent: `${recipe.protein} g`, carbohydrateContent: `${recipe.carbs} g`, fatContent: `${recipe.fat} g` },
     recipeIngredient: recipe.ingredients,
     recipeInstructions: recipe.instructions.map((text, index) => ({ "@type": "HowToStep", position: index + 1, text }))
+  };
+}
+
+export function buildBreadcrumbSchema(items: { name: string; path: string }[], siteUrl: string) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: absoluteUrl(item.path, siteUrl),
+    })),
+  };
+}
+
+export function buildRecipeListSchema(recipes: Recipe[], siteUrl: string, name: string) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name,
+    itemListElement: recipes.map((recipe, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      url: absoluteUrl(`/recipes/${recipe.slug}`, siteUrl),
+      name: recipe.title,
+    })),
   };
 }
 

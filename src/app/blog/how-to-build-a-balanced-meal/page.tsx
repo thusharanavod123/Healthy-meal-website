@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { BookOpen, Clock } from "lucide-react";
 import { getSiteUrl } from "@/lib/site-url";
+import { buildBreadcrumbSchema } from "@/lib/schema";
 
 const title = "How to Build a Balanced Meal Without Overthinking It";
 const description = "Use this flexible, practical framework to build balanced everyday meals with vegetables, protein, grains, and satisfying flavor.";
@@ -14,6 +15,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/blog/how-to-build-a-balanced-meal" },
   openGraph: {
     type: "article",
+    siteName: "FreshTable",
+    url: "/blog/how-to-build-a-balanced-meal",
     title,
     description,
     publishedTime: publishedAt,
@@ -24,6 +27,7 @@ export const metadata: Metadata = {
       alt: "Balanced bowl with chicken, quinoa, and colorful vegetables",
     }],
   },
+  twitter: { card: "summary_large_image", title, description, images: ["/images/lemon-herb-chicken-bowl.png"] },
 };
 
 export default function BalancedMealArticle() {
@@ -41,6 +45,7 @@ export default function BalancedMealArticle() {
     image: `${siteUrl}/images/lemon-herb-chicken-bowl.png`,
     mainEntityOfPage: articleUrl,
   };
+  const breadcrumbs = buildBreadcrumbSchema([{ name: "Home", path: "/" }, { name: "Healthy eating guides", path: "/blog" }, { name: title, path: "/blog/how-to-build-a-balanced-meal" }], siteUrl);
 
   return (
     <article>
@@ -142,7 +147,7 @@ export default function BalancedMealArticle() {
         </aside>
       </div>
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([schema, breadcrumbs]).replace(/</g, "\\u003c") }} />
     </article>
   );
 }

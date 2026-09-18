@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { recipes } from "./content";
-import { absoluteUrl, buildFaqSchema, buildRecipeSchema, isoDuration } from "./schema";
+import { absoluteUrl, buildBreadcrumbSchema, buildFaqSchema, buildRecipeListSchema, buildRecipeSchema, isoDuration } from "./schema";
 
 describe("SEO schema utilities", () => {
   it("creates valid ISO durations including hours", () => {
@@ -24,5 +24,12 @@ describe("SEO schema utilities", () => {
   it("only creates FAQ markup when genuine FAQs exist", () => {
     expect(buildFaqSchema([])).toBeNull();
     expect(buildFaqSchema(recipes[0].faqs)?.mainEntity).toHaveLength(2);
+  });
+  it("builds ordered breadcrumbs and recipe collection links", () => {
+    const breadcrumbs = buildBreadcrumbSchema([{ name: "Home", path: "/" }, { name: "Recipes", path: "/recipes" }], "https://example.com");
+    expect(breadcrumbs.itemListElement[1]).toMatchObject({ position: 2, item: "https://example.com/recipes" });
+    const list = buildRecipeListSchema(recipes.slice(0, 2), "https://example.com", "Healthy recipes");
+    expect(list.itemListElement).toHaveLength(2);
+    expect(list.itemListElement[0].url).toContain("/recipes/");
   });
 });
